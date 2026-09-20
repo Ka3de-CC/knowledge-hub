@@ -1,6 +1,21 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
+
+# 接受用户数据
+class UserCreate(BaseModel):
+    username : str
+    email : str
+    age : int
+    password : str
+
+# 返回给前端的数据
+class UserResponse(BaseModel):
+    username : str
+    email : str
+    age : int
+
 
 @app.get("/")
 def root():
@@ -35,5 +50,17 @@ def search(page : int,size : int):
         "size" : size
     }
 
+@app.post("/register")
+def register(user : UserCreate):
+    return user
+
+@app.post(
+    "/users",
+    response_model = UserResponse
+)
+def create_user(user : UserCreate):
+    return user
+
+
 if __name__ == "__main__":
-    print(hello())
+
