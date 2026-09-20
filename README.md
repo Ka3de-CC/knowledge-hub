@@ -8,7 +8,7 @@ Build a knowledge management system as the foundation of future Agent applicatio
 
 ## Tech Stack
 
-- Python
-- FastAPI
-- PostgreSQL
-- Docker
+- Python 3.11
+- FastAPI (planned)
+- PostgreSQL (planned)
+- Docker (planned)
