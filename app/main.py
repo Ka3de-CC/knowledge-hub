@@ -50,10 +50,7 @@ def search(page : int,size : int):
         "size" : size
     }
 
-@app.post("/register")
-def register(user : UserCreate):
-    return user
-
+# 注册逻辑
 @app.post(
     "/users",
     response_model = UserResponse
@@ -63,4 +60,5 @@ def create_user(user : UserCreate):
 
 
 if __name__ == "__main__":
+    print(root())
 
