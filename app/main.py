@@ -1,21 +1,22 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 
 app = FastAPI()
 
 # 接受用户数据
 class UserCreate(BaseModel):
-    username : str
+    username : str = Field(min_length = 3,max_length = 20)
     email : str
-    age : int
-    password : str
+    age : int = Field(ge = 0,le = 120)
+    password : str = Field(min_length = 8)
+    nickname : str | None = Field(default = None,min_length = 2,max_length = 20)
 
 # 返回给前端的数据
 class UserResponse(BaseModel):
     username : str
     email : str
     age : int
-
+    nickname : str | None = None
 
 @app.get("/")
 def root():
@@ -56,6 +57,7 @@ def search(page : int,size : int):
     response_model = UserResponse
 )
 def create_user(user : UserCreate):
+    print("已进入create_user函数")
     return user
 
 
