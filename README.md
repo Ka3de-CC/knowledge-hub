@@ -1,14 +1,98 @@
-# Knowledge Hub
+# Knowledge Hub — 售后工单 Agent（开发中）
 
-My first AI engineering project.
+本项目从 Python 后端基础练习开始，正在演进为面向模拟售后场景的
+ServiceDesk Agent。
 
-## Goal
+当前沿用 knowledge-hub 仓库，复用已有的 API、数据校验和测试基础。
 
-Build a knowledge management system as the foundation of future Agent applications.
+## 项目目标
 
-## Tech Stack
+让用户通过自然语言查询订单、检索售后规则，并在确认后提交工单。
 
-- Python 3.11
-- FastAPI (planned)
-- PostgreSQL (planned)
-- Docker (planned)
+目标流程：
+
+理解问题 → 查询订单与规则 → 提出方案 → 用户确认 → 创建工单
+
+以上是目标流程，尚未全部实现。
+
+## 当前进度
+
+| 模块 | 状态 |
+|---|---|
+| Python 虚拟环境、Git 与配置管理 | 已建立 |
+| FastAPI 基础接口与 Pydantic 校验 | 已完成基础练习 |
+| 文档创建与按 ID 查询 | 已实现，暂存于进程内存 |
+| 基础用户与文档接口测试 | 已通过本地测试 |
+| DeepSeek 模型 API 调用 | 已通过独立脚本跑通 |
+| 模型自主调用订单查询工具 | 待实现 |
+| 售后规则检索与引用 | 待实现 |
+| PostgreSQL 业务数据持久化 | 待接入 |
+| 人工确认、工单提交与幂等处理 | 待实现 |
+| Agent 端到端评测 | 待实现 |
+
+## 当前代码入口
+
+- app/main.py：已有 FastAPI 接口。
+- app/llm_demo.py：独立的 DeepSeek API 调用实验。
+- tests/：已有接口测试。
+
+目前模型实验与 FastAPI 接口尚未集成。
+
+## 本地运行
+
+以下命令在项目根目录执行，前提是已创建项目虚拟环境并安装对应依赖。
+完整依赖清单与新环境安装流程后续补齐。
+
+激活环境：
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+### 模型调用实验
+
+在项目根目录的 .env 中配置 DEEPSEEK_API_KEY。
+不要将真实密钥提交到仓库。
+
+```powershell
+python app/llm_demo.py
+```
+
+当前脚本仅进行一次模型调用，不会实际查询订单。
+不需要为这个实验启动 Uvicorn 或数据库。
+
+### 原有后端接口
+
+```powershell
+python -m uvicorn app.main:app --reload
+```
+
+接口测试页面：
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### 基础接口测试
+
+```powershell
+python -m pytest tests -q
+```
+
+这些测试暂不代表完整 Agent 任务已经通过验证。
+
+## 当前限制
+
+项目仅用于模拟业务场景，尚未实现正式身份认证和完整访问控制。
+
+文档仍保存在内存中，服务重启后会丢失。
+模型目前没有订单查询工具，不能确认任何真实订单状态。
+
+## 下一里程碑
+
+实现只读订单查询工具，并完成：
+
+用户问题 → 模型提出工具调用 → 参数与权限检查
+→ 查询模拟订单 → 工具结果返回模型 → 回答用户
+
+同时为订单存在、不存在、访问权限不足等情况编写测试。
